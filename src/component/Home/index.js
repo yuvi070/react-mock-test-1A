@@ -13,6 +13,7 @@ import {
   SearchButton,
   Heading,
   SongsDiv,
+  NoSongView,
 } from './styled'
 
 import SongCard from '../SongCard'
@@ -110,10 +111,17 @@ class Home extends Component {
     this.setState({searchInput: event.target.value})
   }
 
+  onClickDeleteButton = id => {
+    const {songsList} = this.state
+    const filteredArray = songsList.filter(each => each.id !== id)
+    this.setState({songsList: filteredArray})
+  }
+
   render() {
     const {songsList, searchInput} = this.state
+    const loweredInput = searchInput.toLocaleLowerCase()
     const filteredList = songsList.filter(each =>
-      each.name.includes(searchInput),
+      each.name.toLocaleLowerCase().includes(loweredInput),
     )
     return (
       <Main>
@@ -123,24 +131,36 @@ class Home extends Component {
             <p>Singer</p>
           </BannerSection>
           <SongsSection>
-            <TopSection>
-              <Heading>Songs Playlist</Heading>
-              <InputDiv>
-                <Input
-                  type="text"
-                  placeholder="Search"
-                  onChange={this.onChangeSearchInput}
-                />
-                <SearchButton>
-                  <IoIosSearch />
-                </SearchButton>
-              </InputDiv>
-            </TopSection>
-            <SongsDiv>
-              {filteredList.map(each => (
-                <SongCard each={each} />
-              ))}
-            </SongsDiv>
+            <>
+              <TopSection>
+                <Heading>Songs Playlist</Heading>
+                <InputDiv>
+                  <Input
+                    type="text"
+                    placeholder="Search"
+                    onChange={this.onChangeSearchInput}
+                  />
+                  <SearchButton>
+                    <IoIosSearch />
+                  </SearchButton>
+                </InputDiv>
+              </TopSection>
+
+              {filteredList.length === 0 ? (
+                <NoSongView>
+                  <p>No songs Found</p>
+                </NoSongView>
+              ) : (
+                <SongsDiv>
+                  {filteredList.map(each => (
+                    <SongCard
+                      onClickDeleteButton={this.onClickDeleteButton}
+                      each={each}
+                    />
+                  ))}
+                </SongsDiv>
+              )}
+            </>
           </SongsSection>
         </HomeDiv>
       </Main>

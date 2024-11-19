@@ -71,5 +71,15 @@ export const Heading = styled.p`
 `
 export const SongsDiv = styled.div`
   height: 80%;
-  overflow-y: auto;
+  overflow: auto;
+`
+export const NoSongView = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  color: white;
+  height: 80%;
+  font-weight: bold;
 `
